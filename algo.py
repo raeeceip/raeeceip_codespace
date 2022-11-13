@@ -27,7 +27,7 @@ def get_jsonparsed_data(url):
 
 # Financialmodelingprep api url
 base_url = "https://financialmodelingprep.com/api/v3/"
-apiKey = "177c05a372a4adb032ba8980798f042b"
+apiKey = "DEMO"
 ticker = 'AAPL'
 # get list of stocks from financial model prep api
 def get_fmp_stock_list():
@@ -38,7 +38,7 @@ def get_fmp_top20():
     url = base_url + "stock/list?apikey=" + apiKey
     data = get_jsonparsed_data(url)
     return data[0:20]
-    
+
 print (get_fmp_top20())
 # get company rating from financial model prep api
 def get_fmp_rating(ticker):
