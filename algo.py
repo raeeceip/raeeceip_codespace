@@ -8,9 +8,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 # Settings to produce nice plots in a Jupyter notebook
 plt.style.use('fivethirtyeight')
-%matplotlib inline
+# %matplotlib inline
 plt.rcParams['figure.figsize'] = [12, 6]
 
 # To extract and parse fundamental data from finviz website
@@ -28,18 +29,33 @@ def get_jsonparsed_data(url):
 base_url = "https://financialmodelingprep.com/api/v3/"
 apiKey = "177c05a372a4adb032ba8980798f042b"
 ticker = 'AAPL'
+# get list of stocks from financial model prep api
+def get_fmp_stock_list():
+    url = base_url + "stock/list?apikey=" + apiKey
+    data = get_jsonparsed_data(url)
+   #return top 20
+def get_fmp_top20():
+    url = base_url + "stock/list?apikey=" + apiKey
+    data = get_jsonparsed_data(url)
+    return data[0:20]
+    
+print (get_fmp_top20())
+# get company rating from financial model prep api
+def get_fmp_rating(ticker):
+    url = base_url + "rating/" + ticker + "?apikey=" + apiKey
+    data = get_jsonparsed_data(url)
+    return data[0]['ratingScore']
 
-income_statement = pd.DataFrame(get_jsonparsed_data(base_url+'income-statement/' + ticker + '?apikey=' + apiKey))
-income_statement = income_statement.set_index('date')
-income_statement = income_statement.apply(pd.to_numeric, errors='coerce')
+# get company profile from financial model prep api
+def get_fmp_profile(ticker):
+# company profile contains company description, sector, industry, address, full time employees, symbol, company name, exchange, market capitalization, website, logo, phone, ceo, tagline, similar companies, etc.
+    url = base_url + "profile/" + ticker + "?apikey=" + apiKey
+    data = get_jsonparsed_data(url)
+    return data[0]
 
-income_statement.iloc[:,4:]
 
-balance_sheet = pd.DataFrame(get_jsonparsed_data(base_url+'balance-sheet-statement/' + ticker + '?apikey=' + apiKey))
-balance_sheet = balance_sheet.set_index('date')
-balance_sheet = balance_sheet.apply(pd.to_numeric, errors='coerce')
+print(get_fmp_rating(ticker))
+print(get_fmp_profile(ticker))
 
-balance_sheet.iloc[:,4:]
 
-print(income_statement)
-print(balance_sheet)
+
